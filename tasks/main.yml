@@ -1,19 +1,21 @@
 ---
-- name: "Ansible | List all known variables and facts"
-  debug:
-    var: hostvars[inventory_hostname]
-
-- name: Create Domain
-  win_domain: >
-     domain_dns_name='{{ dc_domain_name }}'
-     safe_mode_password='{{ dc_password_recovery }}'
-  register: ad
+- name: Create new Windows domain in a new forest with specific parameters
+  ansible.windows.win_domain:
+    create_dns_delegation: "{{ dc_create_dns_delegation }}"
+    database_path: "{{ dc_database_path }}"
+    dns_domain_name: "{{ dc_domain_dns_name }}"   
+    domain_netbios_name: "{{ dc_domain_netbios_name }}"  
+    safe_mode_password: "{{ dc_safe_mode_password }}"
+    sysvol_path: "{{ dc_sysvol_path }}"
+    # domain_mode: Win2012R2
+    # forest_mode: Win2012R2
+  register: domain_install
 
 - name: reboot server
   win_reboot:
    msg: 'Installing AD. Rebooting...'
    pre_reboot_delay: 15
-  when: ad.changed
+  when: domain_install.changed
 
 - name: Set internal DNS server 
   win_dns_client:
