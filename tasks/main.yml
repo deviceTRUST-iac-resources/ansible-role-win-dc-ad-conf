@@ -1,4 +1,8 @@
 ---
+- name: "Ansible | List all known variables and facts"
+  debug:
+    var: hostvars[inventory_hostname]
+
 - name: Create Domain
   win_domain: >
      domain_dns_name='{{ dc_domain_name }}'
