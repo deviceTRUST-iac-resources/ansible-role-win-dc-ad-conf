@@ -1,12 +1,12 @@
 ---
 - name: Create new Windows domain in a new forest with specific parameters
   ansible.windows.win_domain:
-    create_dns_delegation: "{{ dc_create_dns_delegation }}"
-    database_path: "{{ dc_database_path }}"
+    # create_dns_delegation: "{{ dc_create_dns_delegation }}"
+    # database_path: "{{ dc_database_path }}"
     dns_domain_name: "{{ dc_domain_dns_name }}"   
     domain_netbios_name: "{{ dc_domain_netbios_name }}"  
     safe_mode_password: "{{ dc_safe_mode_password }}"
-    sysvol_path: "{{ dc_sysvol_path }}"
+    # sysvol_path: "{{ dc_sysvol_path }}"
     # domain_mode: Win2012R2
     # forest_mode: Win2012R2
   register: domain_install
