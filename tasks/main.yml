@@ -1,22 +1,23 @@
 ---
-- name: create domain
-  win_domain:
-    dns_domain_name: "{{ dc_domain_ame }}"
-    domain_netbios_name: "{{ dc_domain_netbiosname }}"
-    safe_mode_password: "{{ dc_password_safemode }}"
-  register: domain_install
+- name: Create Domain
+  win_domain: >
+     dns_domain_name='{{ dc_domain_name }}'
+     safe_mode_password='{{ dc_password_recovery }}'
+  register: ad
 
 - name: reboot server
   win_reboot:
    msg: 'Installing AD. Rebooting...'
    pre_reboot_delay: 15
-  when: domain_install.changed
+  when: ad.changed
 
 - name: Set internal DNS server 
   win_dns_client:
     adapter_names: '*'
     ipv4_addresses:
     - '127.0.0.1'
+
+# Source: https://madlabber.wordpress.com/2019/09/08/creating-a-new-active-directory-forest-with-ansible/
 
 - name: Wait for DNS available
   win_wait_for:
@@ -28,7 +29,7 @@
 - name: Test - add domain user
   win_domain_user:
     name: testuser
-    password: Passw0rd
+    password: "{{ dc_password_user }}"
     state: present
   register: win_domain_user
   until: win_domain_user.failed == false
