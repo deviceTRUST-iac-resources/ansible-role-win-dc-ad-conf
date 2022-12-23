@@ -25,21 +25,3 @@
     delay: 10
     sleep: 5
     timeout: 600
-
-- name: Test - add domain user
-  win_domain_user:
-    name: testuser
-    password: "{{ dc_password_user }}"
-    state: present
-  register: win_domain_user
-  until: win_domain_user.failed == false
-  retries: 40
-  delay: 15
-  ignore_errors: yes
-  changed_when: False
-
-- name: Test - remove domain user
-  win_domain_user:
-    name: testuser
-    state: absent
-  changed_when: False
