@@ -1,8 +1,10 @@
 ---
 - name: Create Domain
   win_domain: >
+     domain_admin_user='{{ dc_admin_domain }}'
+     domain_admin_password='{{ dc_password_admin }}'
      dns_domain_name='{{ dc_domain_name }}'
-     safe_mode_password='{{ dc_password_recovery }}'
+     safe_mode_password='{{ dc_password_safemode }}'
   register: ad
 
 - name: reboot server
