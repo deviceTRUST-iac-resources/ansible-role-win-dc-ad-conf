@@ -3,7 +3,7 @@
   win_domain: >
      domain_admin_user='{{ dc_admin_domain }}'
      domain_admin_password='{{ dc_password_admin }}'
-     domain_dnsname='{{ domain_name }}'
+     dns_domain_name='{{ domain_name }}'
      safe_mode_password='{{ dc_password_safemode }}'
   register: ad
 
